@@ -1,0 +1,104 @@
+Chapter Number	Chapter Title	Module Title	Production Module ID
+0	Preface	Preface	m47830
+1	Sampling and Data	Introduction	m46913
+1	Sampling and Data	Definitions of Statistics, Probability, and Key Terms	m46909
+1	Sampling and Data	Data, Sampling, and Variation in Data and Sampling	m46885
+1	Sampling and Data	Frequency, Frequency Tables, and Levels of Measurement	m46882
+1	Sampling and Data	Experimental Design and Ethics	m46919
+1	Sampling and Data	Data Collection Experiment	m50252
+1	Sampling and Data	Sampling Experiment	m50243
+2	Descriptive Statistics	Introduction	m46925
+2	Descriptive Statistics	Stem-and-Leaf Graphs (Stemplots), Line Graphs, and Bar Graphs	m46934
+2	Descriptive Statistics	Histograms, Frequency Polygons, and Time Series Graphs	m46924
+2	Descriptive Statistics	Measures of the Location of the Data	m46930
+2	Descriptive Statistics	Box Plots	m46920
+2	Descriptive Statistics	Measures of the Center of the Data	m46928
+2	Descriptive Statistics	Skewness and the Mean, Median, and Mode	m46931
+2	Descriptive Statistics	Measures of the Spread of the Data	m46922
+2	Descriptive Statistics	Descriptive Statistics	m50253
+3	Probability Topics	Introduction	m46938
+3	Probability Topics	Terminology	m46942
+3	Probability Topics	Independent and Mutually Exclusive Events	m46948
+3	Probability Topics	Two Basic Rules of Probability	m46947
+3	Probability Topics	Contingency Tables	m46935
+3	Probability Topics	Tree and Venn Diagrams	m46944
+3	Probability Topics	Probability Topics	m50256
+4	Discrete Random Variables	Introduction	m46955
+4	Discrete Random Variables	Probability Distribution Function (PDF) for a Discrete Random Variable	m46963
+4	Discrete Random Variables	Mean or Expected Value and Standard Deviation	m46959
+4	Discrete Random Variables	Binomial Distribution	m46950
+4	Discrete Random Variables	Geometric Distribution	m46953
+4	Discrete Random Variables	Hypergeometric Distribution	m46964
+4	Discrete Random Variables	Poisson Distribution	m46961
+4	Discrete Random Variables	Discrete Distribution (Playing Card Experiment)	m50257
+4	Discrete Random Variables	Discrete Distribution (Lucky Dice Experiment)	m50259
+5	Continuous Random Variables	Introduction	m46967
+5	Continuous Random Variables	Continuous Probability Functions	m46965
+5	Continuous Random Variables	The Uniform Distribution	m46972
+5	Continuous Random Variables	The Exponential Distribution	m46969
+5	Continuous Random Variables	Continuous Distribution	m50260
+6	The Normal Distribution	Introduction	m46977
+6	The Normal Distribution	The Standard Normal Distribution	m46980
+6	The Normal Distribution	Using the Normal Distribution	m46973
+6	The Normal Distribution	Normal Distribution (Lap Times)	m50261
+6	The Normal Distribution	Normal Distribution (Pinkie Length)	m50264
+7	The Central Limit Theorem	Introduction	m46983
+7	The Central Limit Theorem	The Central Limit Theorem for Sample Means (Averages)	m46994
+7	The Central Limit Theorem	The Central Limit Theorem for Sums	m46997
+7	The Central Limit Theorem	Using the Central Limit Theorem	m46992
+7	The Central Limit Theorem	Central Limit Theorem (Pocket Change)	m50268
+7	The Central Limit Theorem	Central Limit Theorem (Cookie Recipes)	m50269
+8	Confidence Intervals	Introduction	m47008
+8	Confidence Intervals	A Single Population Mean using the Normal Distribution	m47002
+8	Confidence Intervals	A Single Population Mean using the Student t Distribution	m47001
+8	Confidence Intervals	A Population Proportion	m46999
+8	Confidence Intervals	Confidence Interval (Home Costs)	m50270
+8	Confidence Intervals	Confidence Interval (Place of Birth)	m50272
+8	Confidence Intervals	Confidence Interval (Women's Heights)	m50274
+9	Hypothesis Testing with One Sample	Introduction	m47041
+9	Hypothesis Testing with One Sample	Null and Alternative Hypotheses	m47033
+9	Hypothesis Testing with One Sample	Outcomes and the Type I and Type II Errors	m47029
+9	Hypothesis Testing with One Sample	Distribution Needed for Hypothesis Testing	m47036
+9	Hypothesis Testing with One Sample	Rare Events, the Sample, Decision and Conclusion	m47044
+9	Hypothesis Testing with One Sample	Additional Information and Full Hypothesis Test Examples	m47019
+9	Hypothesis Testing with One Sample	Hypothesis Testing of a Single Mean and Single Proportion	m50277
+10	Hypothesis Testing with Two Samples	Introduction	m47057
+10	Hypothesis Testing with Two Samples	Two Population Means with Unknown Standard Deviations	m47050
+10	Hypothesis Testing with Two Samples	Two Population Means with Known Standard Deviations	m47061
+10	Hypothesis Testing with Two Samples	Comparing Two Independent Population Proportions	m47060
+10	Hypothesis Testing with Two Samples	Matched or Paired Samples	m47045
+10	Hypothesis Testing with Two Samples	Hypothesis Testing for Two Means and Two Proportions	m50278
+11	The Chi-Square Distribution	Introduction	m47088
+11	The Chi-Square Distribution	Facts About the Chi-Square Distribution	m47062
+11	The Chi-Square Distribution	Goodness-of-Fit Test	m47064
+11	The Chi-Square Distribution	Test of Independence	m47077
+11	The Chi-Square Distribution	Test for Homogeneity	m47091
+11	The Chi-Square Distribution	Comparison of the Chi-Square Tests	m47082
+11	The Chi-Square Distribution	Test of a Single Variance	m47085
+11	The Chi-Square Distribution	Lab 1: Chi-Square Goodness-of-Fit	m50279
+11	The Chi-Square Distribution	Lab 2: Chi-Square Test of Independence	m50280
+12	Linear Regression and Correlation	Introduction	m47098
+12	Linear Regression and Correlation	Linear Equations	m47100
+12	Linear Regression and Correlation	Scatter Plots	m47109
+12	Linear Regression and Correlation	The Regression Equation	m47117
+12	Linear Regression and Correlation	Testing the Significance of the Correlation Coefficient	m47111
+12	Linear Regression and Correlation	Prediction	m47105
+12	Linear Regression and Correlation	Outliers	m47107
+12	Linear Regression and Correlation	Regression (Distance from School)	m50283
+12	Linear Regression and Correlation	Regression (Textbook Cost)	m50285
+12	Linear Regression and Correlation	Regression (Fuel Efficiency)	m50287
+13	F Distribution and One-Way ANOVA	Introduction	m47121
+13	F Distribution and One-Way ANOVA	One-Way ANOVA	m47124
+13	F Distribution and One-Way ANOVA	The F Distribution and the F-Ratio	m47128
+13	F Distribution and One-Way ANOVA	Facts About the F Distribution	m47119
+13	F Distribution and One-Way ANOVA	Test of Two Variances	m47125
+13	F Distribution and One-Way ANOVA	Lab: One-Way ANOVA	m50288
+14	Review Exercises (Ch 3-13)	Review Exercises (Ch 3-13)	m47864
+15	Practice Tests (1-4) and Final Exams	Practice Tests (1-4) and Final Exams	m47865
+16	Data Sets	Data Sets	m47873
+17	Group and Partner Projects	Group and Partner Projects	m47874
+18	Solution Sheets	Solution Sheets	m47882
+19	Mathematical Phrases, Symbols, and Formulas	Mathematical Phrases, Symbols, and Formulas	m47891
+20	Notes for the TI-83, 83, 84, 84 Calculators	Notes for the TI-83, 83, 84, 84 Calculators	m47896
+21	Tables	Tables	m47875
+

@@ -1,0 +1,24 @@
+{
+    "destination_server": "legacy-cte-cnx-dev.cnx.org",
+    "source_server": "legacy.cnx.org",
+    "destination_credentials": "user2:user2",
+​
+    "authors":["user2"],
+    "maintainers":["user2"],
+    "rightsholders":["user2"],
+​
+    "user2":"user2",
+​
+​
+    "path_to_tool": "/home/ew2/git/content-copy-tool",
+    "logfile": "content-copy.log",
+    "chapter_title_column": "Chapter Title",
+    "chapter_number_column": "Chapter Number",
+    "module_title_column": "Module Title",
+    "source_module_ID_column": "Production Module ID",
+    "destination_module_ID_column": "Textbook-Dev Module ID",
+    "destination_workgroup_column": "Textbook-Dev Workgroup",
+    "unit_number_column": "Unit Number",
+    "unit_title_column": "Unit Title",
+    "strip_section_numbers": "true"
+}
