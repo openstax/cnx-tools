@@ -5,7 +5,7 @@ Projects
 --------
 
  * **content-copy-tool** - used to move content from one CNX legacy server to another
- * **cnx-url-conversion-tool - converts legacy URLs to Rewrite URLs
+ * **cnx-url-conversion-tool** - converts legacy URLs to Rewrite URLs
  
  License
 -------
