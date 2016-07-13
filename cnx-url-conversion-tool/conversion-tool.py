@@ -23,24 +23,23 @@ def parseInput():
         while (len(collectionId) != 1):
             collectionId = repeatPrompt(prompt3, '', False)
         prompt4 = "Do you want all of the module IDs in this collection?"
-        getModules = handleInputs(prompt4, ['yes', 'no'])
-        if (getModules == "yes"):
+        prompt5 = "(Type 'y' or 'n') "
+        getModules = handleInputs(prompt4, ['y', 'n'], prompt5)
+        if (getModules == "y"):
             return isCol, collectionId, True
         else:
             return isCol, collectionId, False
 
     else:
-
         prompt2 = "Do you want to import the module IDs from an excel sheet?"
-        excel = handleInputs(prompt2, ['yes', 'no'])
-        if (excel == "yes"):
+        prompt5 = "(Type 'y' or 'n') "
+        excel = handleInputs(prompt2, ['y', 'n'], prompt5)
+        if (excel == "y"):
             moduleIdList = importExcel()
-            print moduleIdList
         else:
             prompt3 = "Input the module IDs separated by spaces."
             moduleIdList = []
             moduleIdList = handleInputs(prompt3, 0, '', False)
-            print moduleIdList
         return isCol, moduleIdList, True
 
 def repeatPrompt(prompt0, prompt1 = "", notModules = True):
@@ -65,7 +64,7 @@ def handleInputs(prompt0, expected, prompt1 = '', notModules = True):
         else: # questions like yes or no
             response = ''
             while (response not in expected):
-                response = repeatPrompt(prompt0, prompt1, notModules).lower()
+                response = repeatPrompt(prompt0, prompt1, notModules).lower()[0]
             return response
 
 
@@ -111,7 +110,7 @@ def convertModuleIdList(moduleIdList):
         sys.exit()
     for moduleId in moduleIdList:
         isLegacy = True
-        if (moduleId[0].lower() != "m"):
+        if (len(moduleId) != 6):
             isLegacy = False
         if isLegacy:
             url = 'https://archive.cnx.org/content/%s/latest' % moduleId
@@ -210,23 +209,23 @@ def printErrors(errorList):
 
 
 def parseExportInput():
-    prompt4 = "Pick the output format."
-    prompt5 = "(type 'csv', 'excel', or 'terminal') "
+    prompt4 = "Pick the output format: csv, excel, or terminal."
+    prompt5 = "(type 'c', 'e' or 't') "
     export = ''
-    export = handleInputs(prompt4, ['csv', 'excel', 'terminal'], prompt5, True)
-    if (export == 'terminal'):
+    export = handleInputs(prompt4, ['c', 'e', 't'], prompt5, True)
+    if (export == 't'):
         return 't', ''
     else:
         filename = ''
         prompt6 = 'Type the filename you want for the exported file.'
         filename = handleInputs(prompt6, 1, '', True)[0]
-        if (export == 'excel'):
+        if (export == 'e'):
             if (filename[-5:] != '.xlsx'):
                 filename += '.xlsx'
         else:
             if (filename[-4:] != '.csv'):
                 filename += '.csv'
-        return export[0], filename
+        return export, filename
 
 def exportAsCsv(filename, idList, errorIdList):
     with open(filename, 'wb') as f:  # Just use 'w' mode in 3.x
