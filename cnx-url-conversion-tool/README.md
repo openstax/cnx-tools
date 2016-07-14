@@ -23,6 +23,4 @@
   The output can be shown in command line or exported as a csv or an excel sheet. 
   
 ## Directions
-  Run the script by typing 
-  `python conversion-tool.py`
-  
+  Run the script by typing `python conversion-tool.py` and then follow the prompts.
