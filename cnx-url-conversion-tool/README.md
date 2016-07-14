@@ -1,6 +1,6 @@
 # Url Conversion Tool
 ## Description
-  The url conversion tool allows for easy conversion from any of the three formats we have for module and collection IDs to the other two formats. The tool is a python 2.7 script that runs on commandline. 
+  The url conversion tool allows for easy conversion from any of the three formats we have for module and collection IDs to the other two formats. The tool is a python 2.7 script that runs on command line. 
   
 ## Before Using the Tool
   Make sure to install Requests and Openpyxl before running the script.
@@ -15,10 +15,10 @@
   - Convert a collection ID, and also get all of the IDs of the modules in that collection in all three formats.
 
 ## Inputs
-  The module IDs can come from an excel sheet (with .xlsx extention) or the commandline. 
+  The module IDs can come from an excel sheet (with .xlsx extention) or the command line. 
 
 ## Outputs
-  The output can be shown in commandline or exported as a csv or an excel sheet. 
+  The output can be shown in command line or exported as a csv or an excel sheet. 
   
 ## Directions
   Run the script by typing 
