@@ -7,7 +7,23 @@ from openpyxl import Workbook
 from openpyxl.compat import range
 from openpyxl import load_workbook
 
+archiveUrl = "https://archive.cnx.org/"
+
 def parseInput():
+    """
+    Asks the user if they want to convert module IDs or collection IDs, how they
+    want to input them, and for the IDs to be converted.
+
+    Arguments:
+        None
+    Returns:
+        isCol - True if it is a collection ID, False for module IDs.
+        moduleIdList - list of module IDs as strings
+        or
+        collectionId - the collection ID to be converted
+        getModuleIDs - True if the user wants the module IDs
+
+    """
     isCol = True
     prompt0 = "Do you want to input module IDs or collection IDs?"
     prompt1 = "(Type \"m\" or \"c\") "
@@ -26,23 +42,30 @@ def parseInput():
         prompt5 = "(Type 'y' or 'n') "
         getModules = handleInputs(prompt4, ['y', 'n'], prompt5)
         if (getModules == "y"):
-            return isCol, collectionId, True
+            getModuleIDs = True
+            return isCol, collectionId, getModuleIDs
         else:
-            return isCol, collectionId, False
+            getModuleIDs = False
+            return isCol, collectionId, getModuleIDs
 
     else:
         prompt2 = "Do you want to import the module IDs from an excel sheet?"
         prompt5 = "(Type 'y' or 'n') "
         excel = handleInputs(prompt2, ['y', 'n'], prompt5)
+        getModuleIDs = True
         if (excel == "y"):
             moduleIdList = importExcel()
         else:
             prompt3 = "Input the module IDs separated by spaces."
             moduleIdList = []
             moduleIdList = handleInputs(prompt3, 0, '', False)
-        return isCol, moduleIdList, True
+        return isCol, moduleIdList, getModuleIDs
 
 def repeatPrompt(prompt0, prompt1 = "", notModules = True):
+    """
+    Repeats the prompt so that the script doesn't terminate when the user doesn't
+    type an input by accident.
+    """
     response = ""
     while (len(response) == 0):
         print prompt0
@@ -53,6 +76,9 @@ def repeatPrompt(prompt0, prompt1 = "", notModules = True):
     return response
 
 def handleInputs(prompt0, expected, prompt1 = '', notModules = True):
+    """
+    Handles different situations for getting user input.
+    """
     if not notModules: # to get module and col ids
         return repeatPrompt(prompt0, prompt1, notModules)
     else:
@@ -69,6 +95,15 @@ def handleInputs(prompt0, expected, prompt1 = '', notModules = True):
 
 
 def importExcel():
+    """
+    Imports the data from an excel sheet.
+
+    Arguments:
+        None
+    Returns:
+        idList - a list of IDs as strings
+    """
+
     prompt7 = "Type the file name, worksheet name, and title of the column with the IDs separated by commas."
     inputs = handleInputs(prompt7, 3, '', True)
     filename = inputs[0]
@@ -76,7 +111,12 @@ def importExcel():
     title = inputs[2]
     if (filename[-5:] != '.xlsx'):
         filename += '.xlsx'
-    wb2 = load_workbook(filename)
+    try:
+        wb2 = load_workbook(filename)
+    except Exception as e:
+        print "The input file does not exist. Please make sure that the filename is correct."
+        sys.exit(1)
+
     sheetNames = wb2.get_sheet_names()
     if sheetname not in sheetNames:
         output = "A worksheet with the name '%s' does not exist in the file." %sheetname
@@ -89,7 +129,7 @@ def importExcel():
                 column = col
                 break
         if (column == 0):
-            sys.exit("A column with that title doesn't exist.")
+            sys.exit("A column with the title '%s' doesn't exist.") %title
         ids = []
         for row in column[1:]:
             moduleId = row.value.encode('ascii','ignore').replace(' ', '')
@@ -99,23 +139,35 @@ def importExcel():
 
 
 def convertModuleIdList(moduleIdList):
-    # check that list is not empty
-    # Check if the ids are valid
-    # figure out which form it is in
+    """
+    Given a list of module IDs, converts them to the other formats by seeing
+    where they redirect to on archive.cnx.org, and getting the IDs from the
+    json.
+
+    Arguments:
+        moduleIdList - list of ids as strings
+
+    Returns:
+        convertedList - list of dictionaries, where each one represents an ID
+            and contains all three formats.
+        errorIdList - list of IDs that returned an error
+        count - number of ids in the converted list
+    """
     convertedList = []
     errorIdList = []
     count = 0
     if (len(moduleIdList) == 0):
         print "There were no IDs entered."
         sys.exit()
+    print "Retrieving IDs..."
     for moduleId in moduleIdList:
         isLegacy = True
         if (len(moduleId) != 6):
             isLegacy = False
         if isLegacy:
-            url = 'https://archive.cnx.org/content/%s/latest' % moduleId
+            url = archiveUrl + 'content/%s/latest' % moduleId
         else:
-            url = 'https://archive.cnx.org/contents/%s' % moduleId
+            url = archiveUrl + 'contents/%s' % moduleId
         r = requests.get(url, allow_redirects=False)
         if (r.status_code != requests.codes.ok and r.status_code != 302):
             errorIdList.append(moduleId)
@@ -131,16 +183,29 @@ def convertModuleIdList(moduleIdList):
         moduleDict['Legacy ID'] = responseJson['legacy_id']
         convertedList.append(moduleDict)
         count += 1
-    #print convertedList
     return convertedList, errorIdList, count
 
-def convertColId(colId):
-    #get the other forms of the collection id from json
-    #make a list of all of the modules inside the collection
-    #send the list to convertModuleIdList
+def convertColId(colId, getModules):
+    """
+    Given a collection ID, converts it to the other formats by seeing
+    where it redirects to on archive.cnx.org. If getModules is true, then it
+    parses the json to get all of the module IDs in the collection and calls
+    convertModuleIdList().
+
+    Arguments:
+        colId - the collection ID
+        getModules - true if the user wants all of the module IDs, false otherwise.
+
+    Returns:
+        convertedList - list of dictionaries, where each one represents an ID
+            and contains all three formats
+        errorIdList - list of IDs that returned an error
+        count - number of ids in the converted list
+    """
+
     errorIdList = []
     isLegacy = True
-    if (colId[0:3].lower() != "col"): #legacy id
+    if (colId[0:3].lower() != "col"):
         isLegacy = False
 
     if isLegacy: #legacyId
@@ -161,30 +226,38 @@ def convertColId(colId):
     moduleDict['Long ID'] = responseJson['id']
     moduleDict['Legacy ID'] = responseJson['legacy_id']
     convertedList = [moduleDict]
-
-    # get all of the module id's
-    # get inside "tree" and then "contents" in json
-    # get the id from preface if it exists
-    # then get id from each bracket in contents inside
-    contents = responseJson['tree']['contents']
-    moduleIdList = []
-    for section in contents:
-        findModuleIds(section, moduleIdList)
-    convertedModules, moduleErrors, count = convertModuleIdList(moduleIdList)
-    errorIdList.extend(moduleErrors)
-    convertedList.append(convertedModules)
+    if getModules:
+        contents = responseJson['tree']['contents']
+        moduleIdList = []
+        for section in contents:
+            findModuleIds(section, moduleIdList)
+        convertedModules, moduleErrors, count = convertModuleIdList(moduleIdList)
+        errorIdList.extend(moduleErrors)
+        convertedList.append(convertedModules)
     return convertedList, errorIdList, count
 
 def findModuleIds(section, moduleIdList):
-        moduleShort = section['shortId']
-        if (moduleShort != 'subcol'):
-            moduleIdList.append(moduleShort)
-        else:
-            for subSection in section['contents']:
-                findModuleIds(subSection, moduleIdList)
+    """
+    Finds the module IDs from the collection json recursively.
+
+    Arguments:
+        section - a subcollection
+        moduleIdList - a list for the module IDs that this function appends to
+    Returns:
+        None
+    """
+    moduleShort = section['shortId']
+    if (moduleShort != 'subcol'):
+        moduleIdList.append(moduleShort)
+    else:
+        for subSection in section['contents']:
+            findModuleIds(subSection, moduleIdList)
 
 
-def printResults(idList, errorList, printModules):
+def printResults(idList, errorList, printModules, isCol):
+    """
+    Prints the results in command line.
+    """
     if isCol:
         colDict = idList[0]
         print "Collection:"
@@ -209,6 +282,9 @@ def printErrors(errorList):
 
 
 def parseExportInput():
+    """
+    Asks the user what format they want for the output.
+    """
     prompt4 = "Pick the output format: csv, excel, or terminal."
     prompt5 = "(type 'c', 'e' or 't') "
     export = ''
@@ -227,8 +303,18 @@ def parseExportInput():
                 filename += '.csv'
         return export, filename
 
-def exportAsCsv(filename, idList, errorIdList):
-    with open(filename, 'wb') as f:  # Just use 'w' mode in 3.x
+def exportAsCsv(filename, idList, errorIdList, isCol):
+    """
+    Exports the results as a csv file.
+
+    Arguments:
+        filename - the name for the file to be exported as
+        idList - list of dictionaries, each one representing one module/collection
+        errorIdList - list of IDs that returned an error
+    Returns:
+        None
+    """
+    with open(filename, 'wb') as f:
         w = csv.DictWriter(f, ['Legacy ID', 'Long ID', 'Short ID'])
         w.writeheader()
         if isCol:
@@ -245,7 +331,18 @@ def exportAsCsv(filename, idList, errorIdList):
     f.close()
     printErrors(errorIdList)
 
-def exportAsExcel(filename, idList, errorIdList, count):
+def exportAsExcel(filename, idList, errorIdList, count, isCol):
+    """
+    Exports the results as an excel (.xlsx) file.
+
+    Arguments:
+        filename - the name for the file to be exported as
+        idList - list of dictionaries, each one representing one module/collection
+        errorIdList - list of IDs that returned an error
+        count - number of module IDs
+    Returns:
+        None
+    """
 
     wb = Workbook()
     dest_filename = filename
@@ -273,21 +370,23 @@ def exportAsExcel(filename, idList, errorIdList, count):
     print "Finished writing to file!"
     printErrors(errorIdList)
 
-
-#flags?
-if __name__ == '__main__':
+def main():
     warnings.simplefilter('ignore', UserWarning)
     isCol, idList, printModules = parseInput()
     if (len(idList) == 0):
         sys.exit()
     export, filename = parseExportInput()
     if isCol:
-        convertedList, errorIdList, count = convertColId(idList[0])
+        convertedList, errorIdList, count = convertColId(idList[0], printModules)
     else:
         convertedList, errorIdList, count = convertModuleIdList(idList)
     if (export == 'c'):
-        exportAsCsv(filename, convertedList, errorIdList)
+        exportAsCsv(filename, convertedList, errorIdList, isCol)
     elif (export == 'e'):
-        exportAsExcel(filename, convertedList, errorIdList, count)
+        exportAsExcel(filename, convertedList, errorIdList, count, isCol)
     else:
-        printResults(convertedList, errorIdList, printModules)
+        printResults(convertedList, errorIdList, printModules, isCol)
+
+
+if __name__ == '__main__':
+    main()
