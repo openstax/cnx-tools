@@ -16,6 +16,8 @@
 
 ## Inputs
   The module IDs can come from an excel sheet (with .xlsx extention) or the command line. 
+  
+  Note that the excel sheet must be in the same directory as the conversion tool.
 
 ## Outputs
   The output can be shown in command line or exported as a csv or an excel sheet. 
