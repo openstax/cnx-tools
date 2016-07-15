@@ -234,7 +234,8 @@ def convertColId(colId, getModules):
         convertedModules, moduleErrors, count = convertModuleIdList(moduleIdList)
         errorIdList.extend(moduleErrors)
         convertedList.append(convertedModules)
-    return convertedList, errorIdList, count
+        return convertedList, errorIdList, count
+    return convertedList, errorIdList, 0
 
 def findModuleIds(section, moduleIdList):
     """
@@ -263,7 +264,8 @@ def printResults(idList, errorList, printModules, isCol):
         print "Collection:"
         print  "Legacy ID   Long ID                                 Short ID"
         print colDict['Legacy ID'], "  ", colDict['Long ID'], "  ", colDict['Short ID']
-        moduleList = idList[1]
+        if printModules:
+            moduleList = idList[1]
     else:
         moduleList = idList
     if (printModules):
