@@ -62,6 +62,11 @@ def parseInput():
         return isCol, moduleIdList, getModuleIDs
 
 def handleInputsWithReturn(prompt0, expected, prompt1):
+    """
+    Allows the module IDs to be inputted to command line even when separated by
+    newline characters. This allows for the user to copy a column from a spreadsheet
+    and paste it into command line.
+    """
     print prompt0
     lines = sys.stdin.readlines()
     moduleIds = []
