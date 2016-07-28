@@ -36,4 +36,6 @@
   The output can be shown in command line or exported as a csv or an excel sheet. 
   
 ## Directions
+  Download the tool by going to https://github.com/Rhaptos/cnx-tools and clicking on "clone or download." 
+  From there, click on "download zip." This will download all of the tools included in this repository, so you might have to delete the tools you don't need.
   Run the script by typing `python conversion-tool.py` and then follow the prompts.
