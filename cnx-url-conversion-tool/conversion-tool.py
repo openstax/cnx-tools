@@ -56,10 +56,20 @@ def parseInput():
         if (excel == "y"):
             moduleIdList = importExcel()
         else:
-            prompt3 = "Input the module IDs separated by spaces."
+            prompt3 = "Input the module IDs separated by spaces or returns.\nWhen you're done, type Ctrl-d in a new line."
             moduleIdList = []
-            moduleIdList = handleInputs(prompt3, 0, '', False)
+            moduleIdList = handleInputsWithReturn(prompt3, 0, '')
         return isCol, moduleIdList, getModuleIDs
+
+def handleInputsWithReturn(prompt0, expected, prompt1):
+    print prompt0
+    lines = sys.stdin.readlines()
+    moduleIds = []
+    for line in lines:
+        ids = line.replace(",", '').rstrip("\n").split()
+        moduleIds.extend(ids)
+    return moduleIds
+
 
 def repeatPrompt(prompt0, prompt1 = "", notModules = True):
     """
