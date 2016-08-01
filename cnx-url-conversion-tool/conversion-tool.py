@@ -320,7 +320,7 @@ def parseExportInput():
                 filename += '.csv'
         return export, filename
 
-def exportAsCsv(filename, idList, errorIdList, isCol):
+def exportAsCsv(filename, idList, errorIdList, isCol, printModules):
     """
     Exports the results as a csv file.
 
@@ -337,18 +337,22 @@ def exportAsCsv(filename, idList, errorIdList, isCol):
         if isCol:
             colDict = idList[0]
             w.writerow(colDict)
-            moduleDictList = idList[1]
+            if printModules:
+                moduleDictList = idList[1]
+            #else:
+                #moduleDictList = []
         else:
             moduleDictList = idList
-        if (len(moduleDictList) == 0):
-            print 'There are no converted module IDs to output.'
-        else:
-            w.writerows(moduleDictList)
+        if printModules:
+            if (len(moduleDictList) == 0):
+                print 'There are no converted module IDs to output.'
+            else:
+                w.writerows(moduleDictList)
     print "Finished writing to file!"
     f.close()
     printErrors(errorIdList)
 
-def exportAsExcel(filename, idList, errorIdList, count, isCol):
+def exportAsExcel(filename, idList, errorIdList, count, isCol, printModules):
     """
     Exports the results as an excel (.xlsx) file.
 
@@ -372,17 +376,19 @@ def exportAsExcel(filename, idList, errorIdList, count, isCol):
         colDict = idList[0]
         for col in range(1, 4):
             _ = ws1.cell(column=col, row=2, value="%s" % colDict[header[col - 1]])
-        moduleDictList = idList[1]
-        startRow = 3
+        if printModules:
+            moduleDictList = idList[1]
+            startRow = 3
     else:
         moduleDictList = idList
         startRow = 2
-    if (len(moduleDictList) == 0):
-        print 'There are no converted module IDs to output.'
-    else:
-        for row in range(startRow, count + startRow):
-            for col in range(1, 4):
-                _ = ws1.cell(column=col, row=row, value="%s" % moduleDictList[row - startRow][header[col - 1]])
+    if printModules:
+        if (len(moduleDictList) == 0):
+            print 'There are no converted module IDs to output.'
+        else:
+            for row in range(startRow, count + startRow):
+                for col in range(1, 4):
+                    _ = ws1.cell(column=col, row=row, value="%s" % moduleDictList[row - startRow][header[col - 1]])
     wb.save(filename = dest_filename)
     print "Finished writing to file!"
     printErrors(errorIdList)
@@ -398,9 +404,9 @@ def main():
     else:
         convertedList, errorIdList, count = convertModuleIdList(idList)
     if (export == 'c'):
-        exportAsCsv(filename, convertedList, errorIdList, isCol)
+        exportAsCsv(filename, convertedList, errorIdList, isCol, printModules)
     elif (export == 'e'):
-        exportAsExcel(filename, convertedList, errorIdList, count, isCol)
+        exportAsExcel(filename, convertedList, errorIdList, count, isCol, printModules)
     else:
         printResults(convertedList, errorIdList, printModules, isCol)
 
