@@ -339,8 +339,6 @@ def exportAsCsv(filename, idList, errorIdList, isCol, printModules):
             w.writerow(colDict)
             if printModules:
                 moduleDictList = idList[1]
-            #else:
-                #moduleDictList = []
         else:
             moduleDictList = idList
         if printModules:
