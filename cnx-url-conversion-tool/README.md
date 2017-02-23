@@ -3,12 +3,25 @@
   The url conversion tool allows for easy conversion from any of the three formats we have for module and collection IDs to the other two formats. The tool is a python 2.7 script that runs on command line. 
   
 ## Before Using the Tool
-  Make sure to install Requests and Openpyxl before running the script.
+  This script uses the libraries Requests and Openpyxl.
+  Before using the tool, run the following two lines on the command line.
   
   `pip install requests`
   
-  `pip isntall openpyxl`
+  `pip install openpyxl`
 
+  If you get "Successfully installed requests-2.10.0" and "Successfully installed et-xmlfile-1.0.1 jdcal-1.2 openpyxl-2.3.5" or something along those lines, you're good to go.
+  
+  If you get "error: [Errno 13] Permission denied: ... ," then try running the command in sudo, i.e. `sudo pip install  openpyxl`.
+  
+  
+  If you get "-bash: pip: command not found," then you need to install pip first.
+  Pip is a preffered installer program for python.
+  On a mac, you can install it by typing the command `sudo easy_install pip`.
+  If you're on windows, you can follow the directions to install it [here](https://pip.pypa.io/en/stable/installing/).
+  
+  After installing pip, run the two pip install commands above again, and they should be installed successfully.
+  
 ## Uses
   - Convert many module IDs at once to the other formats.
   - Convert a collection ID to other formats.
@@ -23,6 +36,6 @@
   The output can be shown in command line or exported as a csv or an excel sheet. 
   
 ## Directions
-  Run the script by typing 
-  `python conversion-tool.py`
-  
+  Download the tool by going to https://github.com/Rhaptos/cnx-tools and clicking on "clone or download." 
+  From there, click on "download zip." This will download all of the tools included in this repository, so you might have to delete the tools you don't need.
+  Run the script by typing `python conversion-tool.py` and then follow the prompts.
