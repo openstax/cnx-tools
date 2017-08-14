@@ -2,7 +2,13 @@ create or replace function find_xpath(xpath_str text, file_name text) returns ta
 $$
 begin
         return query
-        select m.uuid, xpath_exists(xpath_str, convert_from(file,'utf8')::xml)
+        select m.uuid, xpath_exists(xpath_str, convert_from(file,'utf8')::xml, 
+	        	ARRAY [
+	                ARRAY ['cnx', 'http://cnx.rice.edu/cnxml'],
+	                ARRAY ['md', 'http://cnx.rice.edu/mdml/0.4'],
+	                ARRAY ['m','http://www.w3.org/1998/Math/MathML']
+	             ]
+             )
         from modules m
         natural join module_files
         natural join files
