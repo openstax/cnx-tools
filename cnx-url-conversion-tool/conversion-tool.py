@@ -180,11 +180,11 @@ def convertModuleIdList(moduleIdList):
         if (len(moduleId) != 6):
             isLegacy = False
         if isLegacy:
-            url = archiveUrl + 'content/%s/latest' % moduleId
+            url = archiveUrl + 'content/%s/latest/' % moduleId
         else:
             url = archiveUrl + 'contents/%s' % moduleId
         r = requests.get(url, allow_redirects=False)
-        if (r.status_code != requests.codes.ok and r.status_code != 302):
+        if (r.status_code != requests.codes.ok and r.status_code not in [301, 302]):
             errorIdList.append(moduleId)
             continue
         r3 = requests.get(r.headers['location']+'.json')
@@ -228,7 +228,7 @@ def convertColId(colId, getModules):
     else:
         url = 'https://archive.cnx.org/contents/%s' % colId
     r = requests.get(url, allow_redirects=False)
-    if (r.status_code != requests.codes.ok and r.status_code != 302):
+    if (r.status_code != requests.codes.ok and r.status_code not in [301,302]):
         errorIdList.append(colId)
         sys.exit("The Collection ID returned an error.")
     r3 = requests.get(r.headers['location']+'.json')
@@ -263,7 +263,7 @@ def findModuleIds(section, moduleIdList):
         None
     """
     moduleShort = section['shortId']
-    if (moduleShort != 'subcol'):
+    if ('.' not in moduleShort):
         moduleIdList.append(moduleShort)
     else:
         for subSection in section['contents']:
