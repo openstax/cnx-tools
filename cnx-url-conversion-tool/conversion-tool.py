@@ -147,8 +147,10 @@ def importExcel():
             sys.exit("A column with the title '%s' doesn't exist.") %title
         ids = []
         for row in column[1:]:
-            moduleId = row.value.encode('ascii','ignore').replace(' ', '')
-            ids.append(moduleId)
+            value = row.value
+            if (value is not None):
+                moduleId = value.encode('ascii','ignore').replace(' ', '')
+                ids.append(moduleId)
         return ids
 
 
