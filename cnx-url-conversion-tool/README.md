@@ -4,11 +4,22 @@
 
 ## Before Using the Tool
   This script uses the libraries Requests and Openpyxl.
+  Check which version of Python is your default by running `python --version`
+  The URL COnversion Tool uses Python version 2.7.X. If you have Python 3.X as your default, use the alternate pip2 commands below.
+  
   Before using the tool, run the following two lines on the command line.
 
   `pip install requests`
 
-  `pip install openpyxl`
+  If Python 3.X is your default python, run this instead
+
+  `pip2 install requests`
+
+  `pip install openpyxl==2.5.0`
+
+  If Python 3.X is your default python, run this instead
+
+  `pip2 install openpyxl==2.5.0`
 
   If you get "Successfully installed requests-2.10.0" and "Successfully installed et-xmlfile-1.0.1 jdcal-1.2 openpyxl-2.3.5" or something along those lines, you're good to go.
 
