@@ -11,9 +11,9 @@ setup(
   version = version['__version__'],
   description = 'Openstax Content Copy Tool',
   author = 'westonnovelli',
-  maintainer = 'tomjw64',
+  maintainer = 'therealmarv, tomjw64',
   python_requires = '>=2.7.0',
-  url = 'https://github.com/openstax/content-copy-tool',
+  url = 'https://github.com/openstax/cnx-tools',
   packages = find_packages(),
   install_requires = [
     'requests',
