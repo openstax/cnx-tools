@@ -1,5 +1,5 @@
 from shutil import rmtree
-from os import remove, path, walk
+from os import remove, path, walk, getpid
 import re as regex
 import traceback
 import zipfile
@@ -11,6 +11,8 @@ from bookmap import Collection
 """
 This file contains the Copy and Content Creation related objects
 """
+
+
 # Configuration Objects
 class CopyConfiguration:
     """ The configuration data that the copier requires. """
@@ -137,11 +139,11 @@ class Copier:
                             continue
                         logger.info("Copying content for module: %s - %s" % (module.source_id, module.full_title()))
                         if not run_options.dryrun:
-                            files.append(http.http_download_file("%s/content/%s/latest/module_export?format=zip" %
-                                                                 (self.config.source_server, module.source_id),
+                            files.append(http.http_download_file("%s/content/%s/latest/module_export?format=zip&nonce=%s" %
+                                                                 (self.config.source_server, module.source_id, getpid()),
                                                                  module.source_id, '.zip'))
-                            files.append(http.http_download_file("%s/content/%s/latest/rhaptos-deposit-receipt" %
-                                                                 (self.config.source_server, module.source_id),
+                            files.append(http.http_download_file("%s/content/%s/latest/rhaptos-deposit-receipt?nonce=%s" %
+                                                                 (self.config.source_server, module.source_id, getpid()),
                                                                  module.source_id, '.xml'))
                             try:
                                 if run_options.roles:
@@ -163,7 +165,7 @@ class Copier:
                                 self.clean_zip("%s.zip" % module.source_id)  # remove index.cnxml.html from zipfile
                             except TerminateError:
                                 raise TerminateError("Terminate Signaled")
-                            except Exception, e:
+                            except Exception as e:
                                 logger.debug(traceback.format_exc())
                                 logger.error("Failed cleaning module zipfile %s" % module.title)
                                 module.valid = False
@@ -195,6 +197,7 @@ class Copier:
                         logger.error("Failure copying module %s" % module.source_id)
                         module.valid = False
                         failures.append((module.full_title(), "copying module"))
+
 
 class ContentCreator:
     def __init__(self, server, credentials):
@@ -355,7 +358,7 @@ class ContentCreator:
             return html[start.end():html.find('"', start.end())]
         except TerminateError:
             raise TerminateError("Terminate Signaled")
-        except Exception, e:
+        except Exception as e:
             logger.debug("Failed to get license, defaulting to cc-by 4.0: %s" % e)
             logger.debug(traceback.format_exc())
             return "http://creativecommons.org/licenses/by/4.0/"
