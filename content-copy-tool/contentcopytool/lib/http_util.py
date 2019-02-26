@@ -6,6 +6,7 @@ from tempfile import mkstemp
 from os import close
 
 import requests
+from requests.exceptions import SSLError
 import signal
 import subprocess
 
