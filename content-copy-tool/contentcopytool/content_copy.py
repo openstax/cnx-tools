@@ -93,7 +93,7 @@ def run(settings, input_file, run_options):
         if run_options.copy:  # copy content
             copier.copy_content(role_config, run_options, logger, failures)
             logger.debug("Finished copying content.")
-        if run_options.accept_roles and not run_options.dryrun:  # accept all pending role requests
+        if run_options.roles and not run_options.dryrun:  # accept all pending role requests
             RoleUpdater(role_config).accept_roles(copy_config, logger, failures)
             logger.debug("Finished updating roles.")
         if run_options.collections:  # create and populate the collection
@@ -377,9 +377,7 @@ def user_confirm(logger, copy_config, bookmap, run_options, role_config):
     logger.info("Copy content? \033[95m%s\033[0m" % run_options.copy)
     if run_options.copy:
         logger.info("Edit roles? \033[95m%s\033[0m" % run_options.roles)
-    if run_options.accept_roles:
-        logger.info("Accept roles? \033[95m%s\033[0m" % run_options.accept_roles)
-    if run_options.roles or run_options.accept_roles:
+    if run_options.roles:
             logger.info("Authors: \033[95m%s\033[0m" % ', '.join(role_config.creators))
             logger.info("Maintainers: \033[95m%s\033[0m" % ', '.join(role_config.maintainers))
             logger.info("Rightsholders: \033[95m%s\033[0m" % ', '.join(role_config.rightholders))
@@ -408,7 +406,7 @@ def main():
 
     if args.chapters:
         args.chapters.sort()
-    run_options = RunOptions(args.modules, args.workgroups, args.copy, args.roles, args.accept_roles, args.collection,
+    run_options = RunOptions(args.modules, args.workgroups, args.copy, args.roles, args.collection,
                              args.units, args.publish, args.publish_collection, args.chapters, args.exclude,
                              args.dryrun)
     booktitle = ""

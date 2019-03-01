@@ -65,8 +65,6 @@ def get_parser(version):
     control_args.add_argument("-r", "--roles", action="store_true", dest="roles",
                               help="Use this flag is you want to update the roles according to the settings "
                                    "(.json) file. This flag only works if -c, --copy flag is also set.")
-    control_args.add_argument("--accept-roles", action="store_true", dest="accept_roles",
-                              help="Use this flag to automatically accept the roles requests.")
     control_args.add_argument("-o", "--collection", action="store_true", dest="collection",
                               help="Use this flag to create collections for each chapter in the book and a parent "
                                    "collection for the entire book.")
@@ -90,8 +88,8 @@ def get_parser(version):
     return parser
 
 def verify_args(args):
-    if args.accept_roles:
-        print "\033[91mWARNING\033[0m: The accept roles function accepts ALL pending role requests for users listed " \
+    if args.roles:
+        print "\033[91mWARNING\033[0m: Updating roles accepts ALL pending role requests for users listed " \
               "in creators, maintainers, or rightholders."
     if args.roles and not args.copy:
         print "ERROR: using -r, --roles requires the use of -c, --copy."

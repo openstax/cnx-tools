@@ -24,7 +24,7 @@ class CopyConfiguration:
 
 class RunOptions:
     """ The input options that describe what the tool will do. """
-    def __init__(self, modules, workgroups, copy, roles, accept_roles, collections, units,
+    def __init__(self, modules, workgroups, copy, roles, collections, units,
                  publish, publish_collection, chapters, exclude, dryrun):
         self.modules = modules
         self.workgroups = workgroups
@@ -32,7 +32,6 @@ class RunOptions:
             self.modules = True
         self.copy = copy
         self.roles = roles
-        self.accept_roles = accept_roles
         self.collections = collections
         self.units = units
         self.publish = publish
