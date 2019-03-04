@@ -6,7 +6,6 @@ import lib.command_line_interface as cli
 from lib.operation_objects import *
 from lib.bookmap import *
 from lib.role_updates import *
-import subprocess
 import signal
 
 """
@@ -417,10 +416,7 @@ def main():
     except Exception, e:
         print "Error: %s", e
         print(traceback.format_exc())
-    app = '"Terminal"'
-    msg = '"Content Copy for '+booktitle+' has completed, see Terminal for results."'
-    bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-    subprocess.call([bashCommand], shell=True)
+    print("Content Copy for {} has completed, see Terminal for results.".format(booktitle))
 
 if __name__ == "__main__":
     main()

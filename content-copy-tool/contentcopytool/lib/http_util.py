@@ -7,7 +7,6 @@ from os import close
 
 import requests
 import signal
-import subprocess
 
 from util import CCTError
 
@@ -35,10 +34,7 @@ def http_post_request(url, headers={}, auth=(), data={}):
     redirects = 0
 
     def handle_timeout(signal, frame):
-        app = '"Terminal"'
-        msg = '"Request: %s is taking an exceptionally long time, you might want to skip this task (Ctrl+z)"' % url
-        bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-        subprocess.call([bashCommand], shell=True)
+        print("Request: {} is taking an exceptionally long time, you might want to skip this task (Ctrl+z)".format(url))
 
     def follow_with_post(response):
         return requests.post(response.headers['Location'], headers=headers, auth=auth, data=data, allow_redirects=False)
@@ -66,10 +62,7 @@ def http_get_request(url, headers={}, auth=(), data={}):
     and authentication tuple.
     """
     def handle_timeout(signal, frame):
-        app = '"Terminal"'
-        msg = '"Request: %s is taking an exceptionally long time, you might want to skip this task (Ctrl+z)"' % url
-        bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-        subprocess.call([bashCommand], shell=True)
+        print("Request: {} is taking an exceptionally long time, you might want to skip this task (Ctrl+z)".format(url))
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
@@ -98,10 +91,7 @@ def http_request(url, headers={}, data={}):
 def http_download_file(url, filename, extension):
     """ Downloads the file at [url] and saves it as [filename.extension]. """
     def handle_timeout(signal, frame):
-        app = '"Terminal"'
-        msg = '"Download: %s is taking an exceptionally long time, you might want to skip this task (Ctrl+z)"' % url
-        bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-        subprocess.call([bashCommand], shell=True)
+        print("Request: {} is taking an exceptionally long time, you might want to skip this task (Ctrl+z)".format(url))
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
@@ -137,10 +127,7 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     req = urllib2.Request(url)
 
     def handle_timeout(signal, frame):
-        app = '"Terminal"'
-        msg = '"Request: %s is taking an exceptionally long time, you might want to skip this task (Ctrl+z)"' % url
-        bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-        subprocess.call([bashCommand], shell=True)
+        print("Request: {} is taking an exceptionally long time, you might want to skip this task (Ctrl+z)".format(url))
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
