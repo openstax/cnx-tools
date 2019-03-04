@@ -22,7 +22,7 @@ class RoleConfiguration:
 class RoleUpdater:
     def __init__(self, role_configuration):
         self.config = role_configuration
-    
+
     def run_update_roles(self, xmlfile):
         self.update_roles(xmlfile, self.prepare_role_updates())
 
