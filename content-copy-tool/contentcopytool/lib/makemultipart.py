@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import os
 import argparse
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email import Encoders
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 def makemultipart(atomfile, package, outfile):
     atompart = MIMEBase('application', 'atom+xml')
@@ -15,7 +15,7 @@ def makemultipart(atomfile, package, outfile):
         'attachment; name=payload; filename=%s' % os.path.basename(
             package.name))
     payloadpart.set_payload(package.read())
-    Encoders.encode_base64(payloadpart)
+    encoders.encode_base64(payloadpart)
 
     message = MIMEMultipart('related')
     message.attach(atompart)
