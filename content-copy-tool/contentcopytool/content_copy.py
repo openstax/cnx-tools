@@ -3,10 +3,12 @@ import sys
 import traceback
 import lib.util as util
 import lib.command_line_interface as cli
-from lib.operation_objects import *
-from lib.bookmap import *
-from lib.role_updates import *
+import lib.operation_objects as op
+import lib.bookmap as bkmap
+import lib.role_updates as role
+import re as regex
 import signal
+from lib.util import CCTError
 
 """
 This script is the main script of the content-copy-tool, it requires the
@@ -46,17 +48,17 @@ def run(settings, input_file, run_options):
     logger.debug("Logger is up and running.")
 
     # Bookmap
-    bookmap_config = BookmapConfiguration(str(config['chapter_number_column']),
-                                          str(config['chapter_title_column']),
-                                          str(config['module_title_column']),
-                                          str(config['source_module_ID_column']),
-                                          str(config['destination_module_ID_column']),
-                                          str(config['destination_workgroup_column']),
-                                          str(config['unit_number_column']),
-                                          str(config['unit_title_column']),
-                                          str(config['strip_section_numbers']))
+    bookmap_config = bkmap.BookmapConfiguration(str(config['chapter_number_column']),
+                                                str(config['chapter_title_column']),
+                                                str(config['module_title_column']),
+                                                str(config['source_module_ID_column']),
+                                                str(config['destination_module_ID_column']),
+                                                str(config['destination_workgroup_column']),
+                                                str(config['unit_number_column']),
+                                                str(config['unit_title_column']),
+                                                str(config['strip_section_numbers']))
     logger.debug("Bookmap configuration has been created")
-    bookmap = Bookmap(input_file, bookmap_config, run_options, logger)
+    bookmap = bkmap.Bookmap(input_file, bookmap_config, run_options, logger)
     logger.debug("Bookmap has been created")
 
     # Copy Configuration and Copier
@@ -68,16 +70,16 @@ def run(settings, input_file, run_options):
     if not regex.match(r'https?://', destination_server):
         destination_server = "http://%s" % destination_server
     credentials = str(config['destination_credentials'])
-    copy_config = CopyConfiguration(source_server, destination_server, credentials)
-    copier = Copier(copy_config, bookmap.bookmap, str(config['path_to_tool']))
+    copy_config = op.CopyConfiguration(source_server, destination_server, credentials)
+    copier = op.Copier(copy_config, bookmap.bookmap, str(config['path_to_tool']))
     logger.debug("Copier has been created")
     # Role Configuration
-    role_config = RoleConfiguration(list(config['authors']),
-                                    list(config['maintainers']),
-                                    list(config['rightsholders']), config, credentials)
+    role_config = role.RoleConfiguration(list(config['authors']),
+                                         list(config['maintainers']),
+                                         list(config['rightsholders']), config, credentials)
     logger.debug("Role configuration has been created.")
     # Content_creator
-    content_creator = ContentCreator(destination_server, credentials)
+    content_creator = op.ContentCreator(destination_server, credentials)
     logger.debug("ContentCreator has been created.")
     failures = []
 
@@ -93,7 +95,7 @@ def run(settings, input_file, run_options):
             copier.copy_content(role_config, run_options, logger, failures)
             logger.debug("Finished copying content.")
         if run_options.roles and not run_options.dryrun:  # accept all pending role requests
-            RoleUpdater(role_config).accept_roles(copy_config, logger, failures)
+            role.RoleUpdater(role_config).accept_roles(copy_config, logger, failures)
             logger.debug("Finished updating roles.")
         if run_options.collections:  # create and populate the collection
             create_populate_and_publish_collection(content_creator, copy_config, bookmap, run_options.units,
@@ -171,8 +173,8 @@ def create_placeholders(logger, bookmap, copy_config, run_options, content_creat
                              (module.title, module.destination_workspace_url))
                 workgroup_url = module.destination_workspace_url
             try:
-                content_creator.run_create_and_publish_module(module, copy_config.destination_server, 
-                                                              copy_config.credentials, logger, workgroup_url, 
+                content_creator.run_create_and_publish_module(module, copy_config.destination_server,
+                                                              copy_config.credentials, logger, workgroup_url,
                                                               dryrun=run_options.dryrun)
                 if run_options.workgroups:
                     chapter_to_workgroup[module.chapter_number].add_module(module)
@@ -405,9 +407,9 @@ def main():
 
     if args.chapters:
         args.chapters.sort()
-    run_options = RunOptions(args.modules, args.workgroups, args.copy, args.roles, args.collection,
-                             args.units, args.publish, args.publish_collection, args.chapters, args.exclude,
-                             args.dryrun)
+    run_options = op.RunOptions(args.modules, args.workgroups, args.copy, args.roles, args.collection,
+                                args.units, args.publish, args.publish_collection, args.chapters, args.exclude,
+                                args.dryrun)
     booktitle = ""
     signal.signal(signal.SIGINT, util.handle_terminate)
     signal.signal(signal.SIGTSTP, util.handle_user_skip)
