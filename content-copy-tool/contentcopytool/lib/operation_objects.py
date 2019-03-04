@@ -1,12 +1,13 @@
+from __future__ import absolute_import
 from shutil import rmtree
 from os import remove, path, walk, getpid
 import re as regex
 import traceback
 import zipfile
-import http_util as http
-from role_updates import RoleUpdater
-from util import CCTError, SkipSignal, TerminateError
-from bookmap import Collection
+from . import http_util as http
+from .role_updates import RoleUpdater
+from .util import CCTError, SkipSignal, TerminateError
+from .bookmap import Collection
 
 """
 This file contains the Copy and Content Creation related objects

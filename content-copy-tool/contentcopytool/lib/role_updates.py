@@ -1,10 +1,11 @@
+from __future__ import absolute_import
 from os import close, remove
 from shutil import move
 from tempfile import mkstemp
 import re as regex
 import traceback
-from util import CCTError, SkipSignal, TerminateError
-import http_util as http
+from .util import CCTError, SkipSignal, TerminateError
+from . import http_util as http
 
 """
 This file contains the Role Updating related object.

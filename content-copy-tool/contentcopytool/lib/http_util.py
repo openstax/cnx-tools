@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 import urllib2
 import urllib
 import httplib
@@ -8,9 +10,9 @@ from os import close
 import requests
 import signal
 
-from util import CCTError
+from .util import CCTError
 
-import makemultipart as multi
+from . import makemultipart as multi
 
 """
 This file contains some utility functions for the content-copy-tool that relate
@@ -85,8 +87,8 @@ def http_request(url, headers={}, data={}):
     try:
         response = urllib2.urlopen(request)
         return response
-    except urllib2.HTTPError, e:
-        print e.message
+    except urllib2.HTTPError as e:
+        print(e.message)
 
 def http_download_file(url, filename, extension):
     """ Downloads the file at [url] and saves it as [filename.extension]. """
@@ -149,7 +151,7 @@ def verify(response, logger):
         error = "Failed response: %s %s when sending to %s with data %s" % \
                 (response.status_code, response.reason, response.request.url, response.request.body)
         if logger is None:
-            print error
+            print(error)
         else:
             logger.debug(error)
         return False

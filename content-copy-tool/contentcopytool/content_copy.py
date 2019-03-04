@@ -1,14 +1,16 @@
+from __future__ import print_function
+from __future__ import absolute_import
 import os.path as path
 import sys
 import traceback
-import lib.util as util
-import lib.command_line_interface as cli
-import lib.operation_objects as op
-import lib.bookmap as bkmap
-import lib.role_updates as role
+from .lib import util as util
+from .lib import command_line_interface as cli
+from .lib import operation_objects as op
+from .lib import bookmap as bkmap
+from .lib import role_updates as role
 import re as regex
 import signal
-from lib.util import CCTError
+from .lib.util import CCTError
 
 """
 This script is the main script of the content-copy-tool, it requires the
@@ -35,7 +37,7 @@ PRODUCTION = True
 def run(settings, input_file, run_options):
     try:
         config = util.parse_json(settings)
-    except Exception, e:
+    except Exception as e:
         print("There was an error reading the settings file: %s, confirm that the formatting compiles with "
                      "all json standards." % settings)
         print(traceback.format_exc())
@@ -415,8 +417,8 @@ def main():
     signal.signal(signal.SIGTSTP, util.handle_user_skip)
     try:
         booktitle = run(args.settings, args.input_file, run_options)
-    except Exception, e:
-        print "Error: %s", e
+    except Exception as e:
+        print("Error: %s", e)
         print(traceback.format_exc())
     print("Content Copy for {} has completed, see Terminal for results.".format(booktitle))
 

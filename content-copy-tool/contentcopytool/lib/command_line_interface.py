@@ -1,3 +1,4 @@
+from __future__ import print_function
 import argparse
 from argparse import RawDescriptionHelpFormatter
 import sys
@@ -89,11 +90,11 @@ def get_parser(version):
 
 def verify_args(args):
     if args.roles:
-        print "\033[91mWARNING\033[0m: Updating roles accepts ALL pending role requests for users listed " \
-              "in creators, maintainers, or rightholders."
+        print("\033[91mWARNING\033[0m: Updating roles accepts ALL pending role requests for users listed " \
+              "in creators, maintainers, or rightholders.")
     if args.roles and not args.copy:
-        print "ERROR: using -r, --roles requires the use of -c, --copy."
+        print("ERROR: using -r, --roles requires the use of -c, --copy.")
         sys.exit()
     if args.publish_collection and not args.collection:
-        print "ERROR: using --publish-collection requires the use of -o, --collection."
+        print("ERROR: using --publish-collection requires the use of -o, --collection.")
         sys.exit()

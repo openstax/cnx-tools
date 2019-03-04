@@ -1,3 +1,4 @@
+from __future__ import print_function
 import csv
 import re as regex
 import time
@@ -112,7 +113,7 @@ class Bookmap:
     def safe_process_column(self, lhs, rhs, row, module, default=None):
         """ Catch the KeyError because not all columns are required. """
         try:
-            exec "%s = %s" % (lhs, rhs)
+            exec("%s = %s" % (lhs, rhs))
         except KeyError:
             if default is None:
                 return  # then we don't have that data, move on
@@ -148,8 +149,8 @@ class Bookmap:
                 num = title[:str.index(title, ' '):]
                 title = title[str.index(title, ' ') + 1:]
                 return num, title
-        except Exception, e:
-            print "\033[91mError stripping section number from: [%s]. leaving title as is. \033[0m" % title
+        except Exception as e:
+            print("\033[91mError stripping section number from: [%s]. leaving title as is. \033[0m" % title)
         return '', title
 
     def remove_invalid_modules(self):
