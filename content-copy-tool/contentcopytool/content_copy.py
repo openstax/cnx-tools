@@ -1,5 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from builtins import input
+from builtins import str
 import os.path as path
 import sys
 import traceback
@@ -392,7 +394,7 @@ def user_confirm(logger, copy_config, bookmap, run_options, role_config):
         logger.info("------------NOTE: \033[95mDRY RUN\033[0m-----------------")
 
     while True:
-        var = raw_input("\33[95mPlease verify this information. If there are \033[91mwarnings\033[95m, "
+        var = input("\33[95mPlease verify this information. If there are \033[91mwarnings\033[95m, "
                         "consider checking your data.\n"
                         "Enter:\n"
                         "    \033[92m1\033[0m - Proceed\n"

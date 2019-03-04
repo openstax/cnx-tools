@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from builtins import str
+from builtins import object
 from shutil import rmtree
 from os import remove, path, walk, getpid
 import re as regex
@@ -15,7 +17,7 @@ This file contains the Copy and Content Creation related objects
 
 
 # Configuration Objects
-class CopyConfiguration:
+class CopyConfiguration(object):
     """ The configuration data that the copier requires. """
     def __init__(self, source_server, destination_server, credentials):
         self.source_server = source_server
@@ -23,7 +25,7 @@ class CopyConfiguration:
         self.credentials = credentials
 
 
-class RunOptions:
+class RunOptions(object):
     """ The input options that describe what the tool will do. """
     def __init__(self, modules, workgroups, copy, roles, collections, units,
                  publish, publish_collection, chapters, exclude, dryrun):
@@ -43,7 +45,7 @@ class RunOptions:
 
 
 # Operation Objects
-class Copier:
+class Copier(object):
     """ The object that does the copying from one server to another. """
     def __init__(self, config, copy_map, path_to_tool):
         self.config = config
@@ -199,7 +201,7 @@ class Copier:
                         failures.append((module.full_title(), "copying module"))
 
 
-class ContentCreator:
+class ContentCreator(object):
     def __init__(self, server, credentials):
         self.server = server
         self.credentials = credentials

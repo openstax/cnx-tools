@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import object
 import csv
 import re as regex
 import time
@@ -9,7 +11,7 @@ This file contains the bookmap related objects.
 """
 
 
-class BookmapConfiguration:
+class BookmapConfiguration(object):
     """ Holds the settings of the bookmap """
     def __init__(self, chapter_number_column,
                        chapter_title_column,
@@ -32,7 +34,7 @@ class BookmapConfiguration:
             self.strip_section_numbers = True
 
 
-class Bookmap:
+class Bookmap(object):
     """ Represents the input data plus the input options """
     def __init__(self, filename, bookmap_config, run_options, logger):
         self.filename = filename
@@ -197,7 +199,7 @@ class Bookmap:
         return save_file
 
 
-class BookmapData:
+class BookmapData(object):
     """ The data structure that holds the bookmap input data. """
     def __init__(self):
         self.modules = []
@@ -247,7 +249,7 @@ class BookmapData:
         return thestr
 
 
-class Collection:
+class Collection(object):
     def __init__(self, title, collection_id='', parent=None):
         self.title = title
         self.id = collection_id
@@ -281,7 +283,7 @@ class Collection:
         return "%s %s %s" % (self.title, self.id, members_string)
 
 
-class Workspace:
+class Workspace(object):
     def __init__(self, url, modules=None):
         self.url = url
         if not modules:

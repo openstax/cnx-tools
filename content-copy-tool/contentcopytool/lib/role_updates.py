@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 from os import close, remove
 from shutil import move
 from tempfile import mkstemp
@@ -11,7 +12,7 @@ from . import http_util as http
 This file contains the Role Updating related object.
 """
 
-class RoleConfiguration:
+class RoleConfiguration(object):
     """ Holds  """
     def __init__(self, creators, maintainers, rightholders, settings, credentials):
         self.creators = creators
@@ -20,7 +21,7 @@ class RoleConfiguration:
         self.settings = settings
         self.credentials = credentials
 
-class RoleUpdater:
+class RoleUpdater(object):
     def __init__(self, role_configuration):
         self.config = role_configuration
 

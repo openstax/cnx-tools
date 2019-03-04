@@ -1,8 +1,10 @@
 from __future__ import print_function
 from __future__ import absolute_import
-import urllib2
-import urllib
-import httplib
+from future import standard_library
+standard_library.install_aliases()
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
+import http.client
 from base64 import b64encode
 from tempfile import mkstemp
 from os import close
@@ -42,7 +44,7 @@ def http_post_request(url, headers={}, auth=(), data={}):
         return requests.post(response.headers['Location'], headers=headers, auth=auth, data=data, allow_redirects=False)
 
     def follow_with_get(response):
-        return requests.Session().send(response.next, allow_redirects=False)
+        return requests.Session().send(response.__next__, allow_redirects=False)
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
@@ -78,16 +80,16 @@ def http_request(url, headers={}, data={}):
     data. If no data is provided, the request will be a GET, if data is provided
     the request will be a POST.
     """
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     if headers:
-        for key, value in headers.iteritems():
+        for key, value in headers.items():
             request.add_header(key, value)
     if data:
-        request.add_data(urllib.urlencode(data))
+        request.add_data(urllib.parse.urlencode(data))
     try:
-        response = urllib2.urlopen(request)
+        response = urllib.request.urlopen(request)
         return response
-    except urllib2.HTTPError as e:
+    except urllib.error.HTTPError as e:
         print(e.message)
 
 def http_download_file(url, filename, extension):
@@ -98,7 +100,7 @@ def http_download_file(url, filename, extension):
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
     try:
-        urllib.urlretrieve(url, filename + extension)
+        urllib.request.urlretrieve(url, filename + extension)
     except Exception as e:
         print(e)
     signal.alarm(0)
@@ -126,7 +128,7 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     userAndPass = b64encode(credentials).decode("ascii")
     headers = {"Content-Type": "multipart/related;boundary=%s;type=application/atom + xml" % boundary_code,
                "In-Progress": "true", "Accept-Encoding": "zip", "Authorization": 'Basic %s' % userAndPass}
-    req = urllib2.Request(url)
+    req = urllib.request.Request(url)
 
     def handle_timeout(signal, frame):
         print("Request: {} is taking an exceptionally long time, you might want to skip this task (Ctrl+z)".format(url))
@@ -134,9 +136,9 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
     if url.startswith('https://'):
-        connection = httplib.HTTPSConnection(req.get_host())
+        connection = http.client.HTTPSConnection(req.get_host())
     else:
-        connection = httplib.HTTPConnection(req.get_host())
+        connection = http.client.HTTPConnection(req.get_host())
     connection.request('POST', req.get_selector(), open(abs_path), headers)
     response = connection.getresponse()
     signal.alarm(0)
