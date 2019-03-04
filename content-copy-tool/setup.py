@@ -18,6 +18,7 @@ setup(
   install_requires = [
     'requests',
     'requests[security]',
+    'future'
   ],
   entry_points = {
     'console_scripts': [
