@@ -419,10 +419,7 @@ def main():
     except Exception, e:
         print "Error: %s", e
         print(traceback.format_exc())
-    app = '"Terminal"'
-    msg = '"Content Copy for '+booktitle+' has completed, see Terminal for results."'
-    bashCommand = "echo; osascript -e 'tell application "+app+"' -e 'activate' -e 'display alert "+msg+"' -e 'end tell'"
-    subprocess.call([bashCommand], shell=True)
+    print("Content Copy for {} has completed, see Terminal for results.".format(booktitle))
 
 if __name__ == "__main__":
     main()
