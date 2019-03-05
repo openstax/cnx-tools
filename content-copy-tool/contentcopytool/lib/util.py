@@ -39,7 +39,7 @@ class ColorStrippingFormatter(logging.Formatter):
 
 def parse_json(input):
     """ Returns the parsed json input """
-    return json.load(open(input))
+    return json.load(open(input, 'r'))
 
 
 class CCTError(Exception):

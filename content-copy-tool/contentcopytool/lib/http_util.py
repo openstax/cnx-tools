@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from future.utils import iteritems
 from future import standard_library
 standard_library.install_aliases()
 import urllib.request, urllib.error, urllib.parse
@@ -44,7 +45,7 @@ def http_post_request(url, headers={}, auth=(), data={}):
         return requests.post(response.headers['Location'], headers=headers, auth=auth, data=data, allow_redirects=False)
 
     def follow_with_get(response):
-        return requests.Session().send(response.__next__, allow_redirects=False)
+        return requests.Session().send(response.next, allow_redirects=False)
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
@@ -82,7 +83,7 @@ def http_request(url, headers={}, data={}):
     """
     request = urllib.request.Request(url)
     if headers:
-        for key, value in headers.items():
+        for key, value in headers.iteritems():
             request.add_header(key, value)
     if data:
         request.add_data(urllib.parse.urlencode(data))
@@ -110,7 +111,7 @@ def extract_boundary(filename):
     """ Extracts the boundary line of a multipart file at filename. """
     boundary_start = 'boundary=\"'
     boundary_end = '\"'
-    with open(filename) as file:
+    with open(filename, 'r') as file:
         text = file.read()
         start = text.find(boundary_start) + len(boundary_start)
         end = text.find(boundary_end, start)
@@ -123,7 +124,7 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     named with the mpartfilename parameter.
     """
     fh, abs_path = mkstemp('.mpart', mpartfilename)
-    multi.makemultipart(open(xmlfile), open(zipfile), open(abs_path, 'w'))
+    multi.makemultipart(open(xmlfile, 'r'), open(zipfile, 'r'), open(abs_path, 'r+'))
     boundary_code = extract_boundary(abs_path)
     userAndPass = b64encode(credentials).decode("ascii")
     headers = {"Content-Type": "multipart/related;boundary=%s;type=application/atom + xml" % boundary_code,
@@ -139,7 +140,7 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
         connection = http.client.HTTPSConnection(req.get_host())
     else:
         connection = http.client.HTTPConnection(req.get_host())
-    connection.request('POST', req.get_selector(), open(abs_path), headers)
+    connection.request('POST', req.get_selector(), open(abs_path, 'r'), headers)
     response = connection.getresponse()
     signal.alarm(0)
     close(fh)
