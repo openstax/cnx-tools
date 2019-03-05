@@ -203,6 +203,17 @@ class ContentCreator:
         self.server = server
         self.credentials = credentials
 
+    def credentials_valid(self):
+        auth_req_url = regex.sub(r'legacy[-.]?', r'', self.server) + "/api/auth-ping"
+        auth = tuple(self.credentials.split(':'))
+        print("Testing credentials: %s - %s" % (self.credentials, self.server))
+        response = http.http_get_request(auth_req_url, auth=auth)
+        if response.status_code == 401:
+            print("Bad credentials: %s - %s" % (self.credentials, self.server))
+            return False
+        print("Good credentials.")
+        return True
+
     def run_create_workgroup(self, workgroup, server, credentials, logger, dryrun=False):
         """
         Uses HTTP requests to create a workgroup with the given information

@@ -78,6 +78,7 @@ def run(settings, input_file, run_options):
     role_config = role.RoleConfiguration(list(config['authors']),
                                          list(config['maintainers']),
                                          list(config['rightsholders']), config, credentials)
+    role_updater = role.RoleUpdater(role_config)
     logger.debug("Role configuration has been created.")
     # Content_creator
     content_creator = op.ContentCreator(destination_server, credentials)
@@ -88,6 +89,9 @@ def run(settings, input_file, run_options):
 
     try:
         logger.debug("Beginning processing.")
+        logger.debug("Testing credentials.")
+        if not content_creator.credentials_valid() or not role_updater.credentials_valid(copy_config):
+            raise CCTError("Credentials invalid")
         if run_options.modules or run_options.workgroups:  # create placeholders
             create_placeholders(logger, bookmap, copy_config, run_options, content_creator, failures)
             output = bookmap.save(run_options.units)  # save output data
@@ -96,7 +100,7 @@ def run(settings, input_file, run_options):
             copier.copy_content(role_config, run_options, logger, failures)
             logger.debug("Finished copying content.")
         if run_options.roles and not run_options.dryrun:  # accept all pending role requests
-            role.RoleUpdater(role_config).accept_roles(copy_config, logger, failures)
+            role_updater(role_config).accept_roles(copy_config, logger, failures)
             logger.debug("Finished updating roles.")
         if run_options.collections:  # create and populate the collection
             create_populate_and_publish_collection(content_creator, copy_config, bookmap, run_options.units,

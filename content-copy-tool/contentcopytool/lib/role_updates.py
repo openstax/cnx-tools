@@ -23,6 +23,18 @@ class RoleUpdater:
     def __init__(self, role_configuration):
         self.config = role_configuration
 
+    def credentials_valid(self, copy_config):
+        auth_req_url = regex.sub(r'legacy[-.]?', r'', copy_config.destination_server) + "/api/auth-ping"
+        for user in self.get_users_of_roles():
+            auth = tuple(user.split(':'))
+            print("Testing credentials: %s - %s" % (user, copy_config.destination_server))
+            response = http.http_get_request(auth_req_url, auth=auth)
+            if response.status_code == 401:
+                print("Bad credentials: %s - %s" % (user, copy_config.destination_server))
+                return False
+            print("Good credentials.")
+        return True
+
     def run_update_roles(self, xmlfile):
         self.update_roles(xmlfile, self.prepare_role_updates())
 
