@@ -100,7 +100,7 @@ def run(settings, input_file, run_options):
             copier.copy_content(role_config, run_options, logger, failures)
             logger.debug("Finished copying content.")
         if run_options.roles and not run_options.dryrun:  # accept all pending role requests
-            role_updater(role_config).accept_roles(copy_config, logger, failures)
+            role_updater.accept_roles(copy_config, logger, failures)
             logger.debug("Finished updating roles.")
         if run_options.collections:  # create and populate the collection
             create_populate_and_publish_collection(content_creator, copy_config, bookmap, run_options.units,
