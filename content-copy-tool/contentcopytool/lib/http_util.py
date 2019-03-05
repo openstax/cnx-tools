@@ -83,7 +83,7 @@ def http_request(url, headers={}, data={}):
     """
     request = urllib.request.Request(url)
     if headers:
-        for key, value in headers.iteritems():
+        for key, value in iteritems(headers):
             request.add_header(key, value)
     if data:
         request.add_data(urllib.parse.urlencode(data))
