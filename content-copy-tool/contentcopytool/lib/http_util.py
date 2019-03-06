@@ -4,7 +4,6 @@ from future.utils import iteritems
 from future import standard_library
 standard_library.install_aliases()
 import urllib.request, urllib.error, urllib.parse
-import urllib.request, urllib.parse, urllib.error
 import http.client
 from base64 import b64encode
 from tempfile import mkstemp
@@ -86,7 +85,7 @@ def http_request(url, headers={}, data={}):
         for key, value in iteritems(headers):
             request.add_header(key, value)
     if data:
-        request.add_data(urllib.parse.urlencode(data))
+        request.data=urllib.parse.urlencode(data)
     try:
         response = urllib.request.urlopen(request)
         return response
@@ -137,10 +136,10 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
     if url.startswith('https://'):
-        connection = http.client.HTTPSConnection(req.get_host())
+        connection = http.client.HTTPSConnection(req.host)
     else:
-        connection = http.client.HTTPConnection(req.get_host())
-    connection.request('POST', req.get_selector(), open(abs_path, 'r'), headers)
+        connection = http.client.HTTPConnection(req.host)
+    connection.request('POST', req.selector, open(abs_path, 'r'), headers)
     response = connection.getresponse()
     signal.alarm(0)
     close(fh)
