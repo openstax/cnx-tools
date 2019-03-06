@@ -231,6 +231,8 @@ your options:
 --dry-run
     Parses the input file data and steps through the other options without
     creating/copying/altering/publishing any content.
+--verbose
+    Verbose DEBUG messages in console. Developers of this tool are encouraged to use the even more verbose DEBUG level -vv .
 ```
 Until now, the tool has been operating on every entry in the input file. But
 sometimes the input file has an entire book’s worth of data and you only want to
