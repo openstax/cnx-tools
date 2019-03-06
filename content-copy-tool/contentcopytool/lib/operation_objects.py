@@ -28,7 +28,8 @@ class CopyConfiguration(object):
 class RunOptions(object):
     """ The input options that describe what the tool will do. """
     def __init__(self, modules, workgroups, copy, roles, collections, units,
-                 publish, publish_collection, chapters, exclude, dryrun):
+                 publish, publish_collection, chapters, exclude, dryrun,
+                 verboselevel):
         self.modules = modules
         self.workgroups = workgroups
         if self.workgroups:
@@ -42,6 +43,7 @@ class RunOptions(object):
         self.chapters = chapters
         self.exclude = exclude
         self.dryrun = dryrun
+        self.verboselevel = verboselevel
 
 
 # Operation Objects
