@@ -45,8 +45,9 @@ def run(settings, input_file, run_options):
         sys.exit(1)
 
     logfile = config['logfile']
-    logger = util.init_logger(logfile)
+    logger = util.init_logger(logfile, run_options.verboselevel)
     logger.debug("Logger is up and running.")
+    logger.debugv("Verbose DEBUGV level for developers is activated.")
 
     # Bookmap
     bookmap_config = bkmap.BookmapConfiguration(str(config['chapter_number_column']),
@@ -410,7 +411,7 @@ def main():
         args.chapters.sort()
     run_options = op.RunOptions(args.modules, args.workgroups, args.copy, args.roles, args.collection,
                                 args.units, args.publish, args.publish_collection, args.chapters, args.exclude,
-                                args.dryrun)
+                                args.dryrun, args.verboselevel)
     booktitle = ""
     signal.signal(signal.SIGINT, util.handle_terminate)
     signal.signal(signal.SIGTSTP, util.handle_user_skip)

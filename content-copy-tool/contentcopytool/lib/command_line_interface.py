@@ -82,6 +82,8 @@ def get_parser(version):
     control_args.add_argument("--dry-run", action="store_true", dest="dryrun",
                               help="Steps through input processing, but does NOT create or copy any content. "
                                    "This is used for checking input file correctness (optional).")
+    control_args.add_argument("-v", "--verbose", action="count", dest="verboselevel", default=0,
+                              help="Verbose DEBUG messages in console. Developers of this tool are encouraged to use the even more verbose DEBUG level -vv .")
 
     parser.add_argument("--version", action="version", version=version, help="Prints the tool's version")
 
