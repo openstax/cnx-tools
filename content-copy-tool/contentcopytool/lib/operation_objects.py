@@ -10,6 +10,7 @@ from . import http_util as http
 from .role_updates import RoleUpdater
 from .util import CCTError, SkipSignal, TerminateError
 from .bookmap import Collection
+import sys
 
 """
 This file contains the Copy and Content Creation related objects
@@ -244,7 +245,10 @@ class ContentCreator(object):
             raise CCTError("%s %s" % (response.status_code, response.reason))
 
         # extract workgroup ID
-        url = response.url.encode('UTF-8')
+        if (sys.version_info.major < 3):
+            url = response.url.encode('UTF-8')
+        else:
+            url = response.url
         id_start = regex.search('GroupWorkspaces/', url).end()
         id_end = url.find('/', id_start)
         workgroup.id = url[id_start:id_end]
@@ -313,11 +317,17 @@ class ContentCreator(object):
                  "license": cc_license,
                  "form.button.next": "Next >>",
                  "form.submitted": "1"}
-        response2 = http.http_post_request(response1.url.encode('UTF-8'), auth=auth, data=data2)
+        if (sys.version_info.major < 3):
+            response2 = http.http_post_request(response1.url.encode('UTF-8'), auth=auth, data=data2)
+        else:
+            response2 = http.http_post_request(response1.url, auth=auth, data=data2)
         if not http.verify(response2, logger):
             raise CCTError("create module for %s request 2 failed: %s %s" %
                            (title, response2.status_code, response2.reason))
-        r2url = response2.url.encode('UTF-8')
+        if (sys.version_info.major < 3):
+            r2url = response2.url.encode('UTF-8')
+        else:
+            r2url = response2.url
         create_url = r2url[:regex.search('cc_license', r2url).start()]
         response3 = http.http_post_request("%scontent_title" % create_url, auth=auth, data=data3)
         if not http.verify(response3, logger):
@@ -348,7 +358,10 @@ class ContentCreator(object):
                                (module_url, response1.status_code, response1.reason))
 
             # extract module ID
-            url = response2.url.encode('UTF-8')
+            if (sys.version_info.major < 3):
+                url = response2.url.encode('UTF-8')
+            else:
+                url = response2.url
             end_id = regex.search('/content_published', url).start()
             beg = url.rfind('/', 0, end_id) + 1
             return url[beg:end_id], url
@@ -357,7 +370,10 @@ class ContentCreator(object):
 
     def get_license(self, response, logger):
         try:
-            html = response.text.encode('UTF-8', 'ignore')
+            if (sys.version_info.major < 3):
+                html = response.text.encode('UTF-8', 'ignore')
+            else:
+                html = response.text
             start = regex.search(r'<input\s*type="hidden"\s*name="license"\s*value="', html)
             return html[start.end():html.find('"', start.end())]
         except TerminateError:
