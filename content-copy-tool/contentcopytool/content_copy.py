@@ -10,6 +10,7 @@ import re as regex
 import subprocess
 import signal
 from lib.util import CCTError
+from lib.http_util import credentials_valid
 
 """
 This script is the main script of the content-copy-tool, it requires the
@@ -90,7 +91,8 @@ def run(settings, input_file, run_options):
     try:
         logger.debug("Beginning processing.")
         logger.debug("Testing credentials.")
-        if not content_creator.credentials_valid() or not role_updater.credentials_valid(copy_config):
+        if (not credentials_valid(content_creator.credentials, content_creator.server) or
+           not all(map(lambda user: credentials_valid(user, copy_config.destination_server), role_updater.get_users_of_roles()))):
             raise CCTError("Credentials invalid")
         if run_options.modules or run_options.workgroups:  # create placeholders
             create_placeholders(logger, bookmap, copy_config, run_options, content_creator, failures)
