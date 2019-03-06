@@ -124,9 +124,9 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
     named with the mpartfilename parameter.
     """
     fh, abs_path = mkstemp('.mpart', mpartfilename)
-    multi.makemultipart(open(xmlfile, 'r'), open(zipfile, 'r'), open(abs_path, 'r+'))
+    multi.makemultipart(open(xmlfile, 'r'), open(zipfile, 'rb'), open(abs_path, 'r+'))
     boundary_code = extract_boundary(abs_path)
-    userAndPass = b64encode(credentials).decode("ascii")
+    userAndPass = b64encode(credentials.encode()).decode("ascii")
     headers = {"Content-Type": "multipart/related;boundary=%s;type=application/atom + xml" % boundary_code,
                "In-Progress": "true", "Accept-Encoding": "zip", "Authorization": 'Basic %s' % userAndPass}
     req = urllib.request.Request(url)
