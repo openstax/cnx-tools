@@ -32,7 +32,7 @@ contentcopytool/
 #### Setting up the tool
 * If you are using git (recommended), from the Documents folder enter the command 
 ```bash
-git clone https://github.com/openstax/content-copy-tool.git
+git clone https://github.com/openstax/cnx-tools
 ```
 This will copy the tool down to your machine and put the contents into the content-copy-tool folder.
 * If you are using git (recommended), to get the latest version of the tool, navigate to the tool’s 
@@ -45,7 +45,7 @@ confirm, this, you should see `content-copy.py`, `setup.py`, `example-settings.j
 and `contentcopytool/` in `Documents/content-copy-tool`.
 * Open a terminal in the tool’s top directory: open Terminal, enter the command
 ```bash
-cd ~/Documents/content-copy-tool
+cd ~/Documents/cnx-tools/content-copy-tool
 ```
 (see Enabling “Open Terminal At Folder” Service section for how to do this
 through Finder). Note: this command will
@@ -57,6 +57,8 @@ necessary packages for using the tool.
 pip install . # If you are using a virtual environment
 pip install . --user # If you are not
 ```
+Note: This tool is fully python 2 and 3 compatible but python 3 is not a requirement.
+You can force using python 3 with using `pip3` instead of `pip`.
 
 * The first thing you should do is create a settings file. Start by opening the
 `example_settings.json` file in a text editor.
