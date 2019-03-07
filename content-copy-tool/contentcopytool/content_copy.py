@@ -13,7 +13,7 @@ from .lib import role_updates as role
 import re as regex
 import signal
 from .lib.util import CCTError
-from lib.http_util import credentials_valid
+from .lib.http_util import credentials_valid
 
 """
 This script is the main script of the content-copy-tool, it requires the
