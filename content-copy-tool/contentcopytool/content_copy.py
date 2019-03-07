@@ -13,6 +13,7 @@ from .lib import role_updates as role
 import re as regex
 import signal
 from .lib.util import CCTError
+from lib.http_util import credentials_valid
 
 """
 This script is the main script of the content-copy-tool, it requires the
@@ -82,6 +83,7 @@ def run(settings, input_file, run_options):
     role_config = role.RoleConfiguration(list(config['authors']),
                                          list(config['maintainers']),
                                          list(config['rightsholders']), config, credentials)
+    role_updater = role.RoleUpdater(role_config)
     logger.debug("Role configuration has been created.")
     # Content_creator
     content_creator = op.ContentCreator(destination_server, credentials)
@@ -92,6 +94,10 @@ def run(settings, input_file, run_options):
 
     try:
         logger.debug("Beginning processing.")
+        logger.debug("Testing credentials.")
+        if (not credentials_valid(content_creator.credentials, content_creator.server) or
+           not all(map(lambda user: credentials_valid(user, copy_config.destination_server), role_updater.get_users_of_roles()))):
+            raise CCTError("Credentials invalid")
         if run_options.modules or run_options.workgroups:  # create placeholders
             create_placeholders(logger, bookmap, copy_config, run_options, content_creator, failures)
             output = bookmap.save(run_options.units)  # save output data
@@ -100,7 +106,7 @@ def run(settings, input_file, run_options):
             copier.copy_content(role_config, run_options, logger, failures)
             logger.debug("Finished copying content.")
         if run_options.roles and not run_options.dryrun:  # accept all pending role requests
-            role.RoleUpdater(role_config).accept_roles(copy_config, logger, failures)
+            role_updater.accept_roles(copy_config, logger, failures)
             logger.debug("Finished updating roles.")
         if run_options.collections:  # create and populate the collection
             create_populate_and_publish_collection(content_creator, copy_config, bookmap, run_options.units,
