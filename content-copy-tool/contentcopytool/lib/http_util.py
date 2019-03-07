@@ -148,7 +148,6 @@ def http_upload_file(xmlfile, zipfile, url, credentials, logger, mpartfilename='
     connection.request('POST', req.selector, message.as_string(unixfrom=False), headers)
     response = connection.getresponse()
     signal.alarm(0)
-    close(fh)
     return response, url
 
 def verify(response, logger):
