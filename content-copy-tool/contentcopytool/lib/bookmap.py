@@ -5,6 +5,7 @@ import csv
 import re as regex
 import time
 import os.path as path
+import sys
 
 """
 This file contains the bookmap related objects.
@@ -147,7 +148,8 @@ class Bookmap(object):
     def strip_section_numbers(self, title):
         """ Strips the section numbers from the module title """
         try:
-            title=str(title)
+            if (sys.version_info.major < 3):
+                title=title.decode('UTF-8')
             if regex.match('[0-9]', title):
                 num = title[:str.index(title, ' '):]
                 title = title[str.index(title, ' ') + 1:]
