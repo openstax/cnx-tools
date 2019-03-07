@@ -4,6 +4,7 @@ import httplib
 from base64 import b64encode
 from tempfile import mkstemp
 from os import close
+import re as regex
 
 import requests
 import signal
@@ -153,3 +154,14 @@ def verify(response, logger):
         else:
             logger.debug(error)
         return False
+
+def credentials_valid(credentials, cnx_legacy_server):
+    auth_req_url = regex.sub(r'legacy[-.]?', r'', cnx_legacy_server) + "/api/auth-ping"
+    auth = tuple(credentials.split(':'))
+    print("Testing credentials: %s - %s" % (credentials, cnx_legacy_server))
+    response = http_get_request(auth_req_url, auth=auth)
+    if response.status_code == 401:
+        print("Bad credentials: %s - %s" % (credentials, cnx_legacy_server))
+        return False
+    print("Good credentials.")
+    return True

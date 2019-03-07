@@ -2,6 +2,7 @@ import json
 import logging
 import re as regex
 import signal
+
 """
 This file contains some basic utility functions for the content-copy-tool.
 Functions relate to tool setup, selenium, and I/O.
