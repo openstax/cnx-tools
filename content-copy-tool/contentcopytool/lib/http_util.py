@@ -116,7 +116,7 @@ def extract_boundary(filename):
         end = text.find(boundary_end, start)
         return text[start:end]
 
-def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
+def http_upload_file(xmlfile, zipfile, url, credentials, logger, mpartfilename='tmp'):
     """
     Uploads a multipart file made up of the given xml and zip files to the
     given url with the given credentials. The temporary multipartfile can be
@@ -139,6 +139,13 @@ def http_upload_file(xmlfile, zipfile, url, credentials, mpartfilename='tmp'):
         connection = http.client.HTTPSConnection(req.host)
     else:
         connection = http.client.HTTPConnection(req.host)
+    logger.debug('Multipart uploading documents')
+    logger.debugv('Host: {}'.format(req.host))
+    logger.debugv('Selector: {}'.format(req.selector))
+    logger.debugv('Headers: {}'.format(headers))
+    logger.debugv('Content:')
+    with open(abs_path, 'r') as fdoc:
+        logger.debugv(fdoc.read())
     connection.request('POST', req.selector, open(abs_path, 'r'), headers)
     response = connection.getresponse()
     signal.alarm(0)

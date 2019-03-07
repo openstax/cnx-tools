@@ -180,7 +180,8 @@ class Copier(object):
                                                                     "%s.zip" % module.source_id,
                                                                     "%s/%s/sword" % (module.destination_workspace_url,
                                                                                      module.destination_id),
-                                                                    self.config.credentials)
+                                                                    self.config.credentials,
+                                                                    logger)
                             files.append(mpart)
                             # clean up temp files
                             if res.status < 400:
