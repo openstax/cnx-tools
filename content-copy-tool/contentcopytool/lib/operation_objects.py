@@ -176,13 +176,12 @@ class Copier(object):
                                 module.valid = False
                                 failures.append((module.full_title(), " cleaning module zipfile "))
                                 continue
-                            res, mpart, url = http.http_upload_file("%s.xml" % module.source_id,
+                            res, url = http.http_upload_file("%s.xml" % module.source_id,
                                                                     "%s.zip" % module.source_id,
                                                                     "%s/%s/sword" % (module.destination_workspace_url,
                                                                                      module.destination_id),
                                                                     self.config.credentials,
                                                                     logger)
-                            files.append(mpart)
                             # clean up temp files
                             if res.status < 400:
                                 for temp_file in files:

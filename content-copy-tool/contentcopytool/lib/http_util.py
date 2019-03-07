@@ -106,15 +106,14 @@ def http_download_file(url, filename, extension):
     signal.alarm(0)
     return filename + extension
 
-def extract_boundary(filename):
+def extract_boundary(message):
     """ Extracts the boundary line of a multipart file at filename. """
     boundary_start = 'boundary=\"'
     boundary_end = '\"'
-    with open(filename, 'r') as file:
-        text = file.read()
-        start = text.find(boundary_start) + len(boundary_start)
-        end = text.find(boundary_end, start)
-        return text[start:end]
+    text = message.as_string(unixfrom=False)
+    start = text.find(boundary_start) + len(boundary_start)
+    end = text.find(boundary_end, start)
+    return text[start:end]
 
 def http_upload_file(xmlfile, zipfile, url, credentials, logger, mpartfilename='tmp'):
     """
@@ -122,9 +121,8 @@ def http_upload_file(xmlfile, zipfile, url, credentials, logger, mpartfilename='
     given url with the given credentials. The temporary multipartfile can be
     named with the mpartfilename parameter.
     """
-    fh, abs_path = mkstemp('.mpart', mpartfilename)
-    multi.makemultipart(open(xmlfile, 'r'), open(zipfile, 'rb'), open(abs_path, 'r+'))
-    boundary_code = extract_boundary(abs_path)
+    message = multi.makemultipart(open(xmlfile, 'r'), open(zipfile, 'rb'))
+    boundary_code = extract_boundary(message)
     userAndPass = b64encode(credentials.encode()).decode("ascii")
     headers = {"Content-Type": "multipart/related;boundary=%s;type=application/atom + xml" % boundary_code,
                "In-Progress": "true", "Accept-Encoding": "zip", "Authorization": 'Basic %s' % userAndPass}
@@ -140,17 +138,18 @@ def http_upload_file(xmlfile, zipfile, url, credentials, logger, mpartfilename='
     else:
         connection = http.client.HTTPConnection(req.host)
     logger.debug('Multipart uploading documents')
+    logger.debugv('Url: {}'.format(url))
     logger.debugv('Host: {}'.format(req.host))
     logger.debugv('Selector: {}'.format(req.selector))
     logger.debugv('Headers: {}'.format(headers))
+    logger.debugv('Boundary: {}'.format(boundary_code))
     logger.debugv('Content:')
-    with open(abs_path, 'r') as fdoc:
-        logger.debugv(fdoc.read())
-    connection.request('POST', req.selector, open(abs_path, 'r'), headers)
+    logger.debugv(message.as_string(unixfrom=False))
+    connection.request('POST', req.selector, message.as_string(unixfrom=False), headers)
     response = connection.getresponse()
     signal.alarm(0)
     close(fh)
-    return response, abs_path, url
+    return response, url
 
 def verify(response, logger):
     """ Returns True if the response code is < 400, False otherwise. """
