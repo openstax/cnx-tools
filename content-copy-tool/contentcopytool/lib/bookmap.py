@@ -147,6 +147,7 @@ class Bookmap(object):
     def strip_section_numbers(self, title):
         """ Strips the section numbers from the module title """
         try:
+            title=str(title)
             if regex.match('[0-9]', title):
                 num = title[:str.index(title, ' '):]
                 title = title[str.index(title, ' ') + 1:]
