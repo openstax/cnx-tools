@@ -10,14 +10,12 @@
   Before using the tool, run the following two lines on the command line.
 
   `pip install requests`
+  
+  `pip install openpyxl==2.5.0`
 
   If Python 3.X is your default python, run this instead
 
   `pip2 install requests`
-
-  `pip install openpyxl==2.5.0`
-
-  If Python 3.X is your default python, run this instead
 
   `pip2 install openpyxl==2.5.0`
 
