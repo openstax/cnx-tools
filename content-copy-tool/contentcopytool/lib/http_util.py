@@ -41,7 +41,7 @@ def http_post_request(url, headers={}, auth=(), data={}):
         return requests.post(response.headers['Location'], headers=headers, auth=auth, data=data, allow_redirects=False)
 
     def follow_with_get(response):
-        return requests.Session().send(response.next, allow_redirects=False)
+        return requests.get(response.headers['Location'], headers=headers, auth=auth, data=data, allow_redirects=False)
 
     signal.signal(signal.SIGALRM, handle_timeout)
     signal.alarm(timeout)
