@@ -1,4 +1,4 @@
-from shutil import rmtree
+from shutil import rmtree, move
 from os import remove, path, walk, getpid
 import re as regex
 import traceback
@@ -51,38 +51,20 @@ class Copier:
         self.copy_map = copy_map
         self.path_to_tool = path_to_tool
 
-    def extract_zip(self, zipfilepath):
-        """ Extracts the data from the given zip file. """
-        with zipfile.ZipFile(zipfilepath, "r") as zipf:
-            temp_item = zipf.namelist()[0]
-            new_dir = temp_item[:temp_item.find('/')]
-            zipf.extractall()
-        return new_dir
-
-    def remove_file_from_dir(self, directory, filename):
-        """ Removes the given file from the given directory. """
-        remove("%s/%s" % (directory, filename))
-
-    def zipdir(self, file_path, zipfilename):
-        """ Zips the given directory into a zip file with the given name. """
-        zipf = zipfile.ZipFile(zipfilename, 'w')
-        for root, dirs, files in walk(file_path):
-            for file_in_dir in files:
-                zipf.write(path.join(root, file_in_dir))
-        zipf.close()
-        rmtree(file_path)
-
     def clean_zip(self, zipfilename):
-        """ Removes the index.cnxml.html file if it is in the given zipfile. """
-        zipfileobject = zipfile.ZipFile(zipfilename, 'r')
-        for filename in zipfileobject.namelist():
-            if regex.search(r'.*/index.cnxml.html', filename):
-                dir = self.extract_zip(zipfilename)
-                remove(zipfilename)
-                zipdir = "%s/%s" % (self.path_to_tool, dir)
-                self.remove_file_from_dir(zipdir, 'index.cnxml.html')
-                self.zipdir(zipdir, zipfilename)
-                break
+        """ Removes index.cnxml.html and auto_generated files if in the given zipfile. """
+        zipfilename_clean = zipfilename + '.clean'
+        zip_in = zipfile.ZipFile(zipfilename, 'r')
+        zip_out = zipfile.ZipFile(zipfilename_clean, 'w')
+        filtered_names = ['index.cnxml.html', 'index_auto_generated.cnxml']
+        for item in zip_in.infolist():
+            if not any([item.filename.endswith(filtered_name) for filtered_name in filtered_names]):
+                buffer = zip_in.read(item.filename)
+                zip_out.writestr(item, buffer)
+        zip_out.close()
+        zip_in.close()
+        remove(zipfilename)
+        move(zipfilename_clean, zipfilename)
 
     def copy_content(self, role_config, run_options, logger, failures):
         """
