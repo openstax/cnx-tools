@@ -1,8 +1,10 @@
 ## Content Copy Tool - User Manual
+
+### info: only Python 2.7.x compatible!
+
 #### Description
 The Content Copy Tool is a development tool to copy content from one cnx server
 to another. The tool is a python script that runs via the command line.
-
 
 #### What’s in the box
 The tool is made up of a set of files and scripts:
@@ -28,6 +30,12 @@ contentcopytool/
         __init__.py
 ```
 
+#### Setting up Python
+
+Content Copy Tool is only compatible with **Python 2.7.x** !
+
+It is recommended you use tools like e.g. pyenv to keep sure you use python 2.7.x
+Also recommended is to use the python2 tool `virtualenv`.
 
 #### Setting up the tool
 * If you are using git (recommended), from the Documents folder enter the command 
@@ -50,6 +58,22 @@ cd ~/Documents/content-copy-tool
 (see Enabling “Open Terminal At Folder” Service section for how to do this
 through Finder). Note: this command will
 bring you to the top level directory of the tool from anywhere in a terminal.
+
+##### (optional but recommended) create and activate virtualenv
+
+Create a new virtualenv environment in the content-copy-tool folder if it's not existing:
+```bash
+virtualenv env
+```
+
+activate virtualenv everytime before using the tool:
+```bash
+source env/bin/activate
+```
+
+*Info: when you're done with content copy tool can deactivate virtualenv it with `deactivate`*
+
+##### setup
 
 * Run one of the following commands to set up the tool. This will install all the
 necessary packages for using the tool.
