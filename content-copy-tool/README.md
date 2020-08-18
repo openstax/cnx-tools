@@ -34,6 +34,11 @@ contentcopytool/
 
 Content Copy Tool is only compatible with **Python 2.7.x** !
 
+You can check python version with
+```bash
+python -V
+```
+
 It is recommended you use tools like e.g. pyenv to keep sure you use python 2.7.x
 Also recommended is to use the python2 tool virtualenv.
 
@@ -59,19 +64,19 @@ cd ~/Documents/content-copy-tool
 through Finder). Note: this command will
 bring you to the top level directory of the tool from anywhere in a terminal.
 
-#### (optional but recommended) virtualenv
+#### virtualenv (optional but recommended) 
 
 For first time create a new virtualenv environment in the content-copy-tool folder if it's not existing:
 ```bash
 virtualenv env
 ```
 
-Activate virtualenv **everytime** before using the tool:
+Activate virtualenv **everytime** before using the content copy tool:
 ```bash
 source env/bin/activate
 ```
 
-*Info: when you're done with content copy tool can deactivate virtualenv it with `deactivate`*
+*Info: when you're done with content copy tool you can deactivate virtualenv it with `deactivate`*
 
 #### Setup libraries and configuration
 
