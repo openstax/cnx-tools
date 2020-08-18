@@ -64,7 +64,7 @@ cd ~/Documents/content-copy-tool
 through Finder). Note: this command will
 bring you to the top level directory of the tool from anywhere in a terminal.
 
-#### virtualenv (optional but recommended) 
+#### virtualenv (optional but recommended)
 
 For first time create a new virtualenv environment in the content-copy-tool folder if it's not existing:
 ```bash
@@ -76,7 +76,7 @@ Activate virtualenv **everytime** before using the content copy tool:
 source env/bin/activate
 ```
 
-*Info: when you're done with content copy tool you can deactivate virtualenv it with `deactivate`*
+*Info: when you're done with content copy tool you can deactivate virtualenv with `deactivate`*
 
 #### Setup libraries and configuration
 
