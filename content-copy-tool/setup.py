@@ -12,12 +12,15 @@ setup(
   description = 'Openstax Content Copy Tool',
   author = 'westonnovelli',
   maintainer = 'therealmarv, tomjw64',
-  python_requires = '>=2.7.0',
+  python_requires = '>=2.7.0,<3',
   url = 'https://github.com/openstax/cnx-tools',
   packages = find_packages(),
   install_requires = [
     'requests',
     'requests[security]',
+    'pyOpenSSL',
+    'ndg-httpsclient',
+    'pyasn1'
   ],
   entry_points = {
     'console_scripts': [
