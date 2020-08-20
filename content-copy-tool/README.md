@@ -68,7 +68,7 @@ bring you to the top level directory of the tool from anywhere in a terminal.
 
 For first time create a new virtualenv environment in the content-copy-tool folder if it's not existing:
 ```bash
-virtualenv env
+virtualenv env -p $(which python2.7)
 ```
 
 Activate virtualenv **everytime** before using the content copy tool:
